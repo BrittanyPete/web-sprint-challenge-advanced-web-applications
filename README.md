@@ -118,8 +118,16 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 
 1. Explain what a token is used for.
 
+    A token is a security code that allows sensitive information to be transmitted between the client and the server. They are used to authenticate whether or not users have access to certain parts of websites.
+
 2. What steps can you take in your web apps to keep your data secure?
+
+    Creating tokens, and private routes can help with this. Private routes are great, because without the token, you are unable to view the private routes.
 
 3. Describe how web servers work.
 
+    A web server stores the code for different websites, and that can be shared to computers all across the world. People are able to access that code for these websites using URL's and a domain name which is basically a file path to the code on the server.
+
 4. Which HTTP methods can be mapped to the CRUD acronym that we use when interfacing with APIs/Servers.
+
+    Get, Post, Put or Patch, and Delete.
