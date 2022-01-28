@@ -1,12 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Login = () => {
+
+    const initialState = {
+        username: '',
+        password: '', 
+    }
+
+
+    const [credentials, setCredentials] = useState(initialState);
+    const [errMessage, setErrMessage] = useState('');
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setCredentials({
+            ...credentials,
+            [name]: value
+        })
+    }
+
+    const handleLogin = e => {
+        e.preventDefault();
+        console.log('creds:', credentials);
+        console.log('error:', errMessage);
+        axios.post(`http://localhost:5000/api/login`, credentials)
+            .then(resp => {
+                // console.log('resp:', resp.data)
+                localStorage.setItem('token', resp.data.token);
+                localStorage.setItem('role', resp.data.role);
+                localStorage.setItem('username', resp.data.username);
+            })
+            .catch(err => {
+                // console.log('error:', err.response.data.error);
+                setErrMessage({
+                    error: err.response.data.error
+                });
+            })
+    }
+
+    console.log('errMsg:', errMessage);
     
-    return(<ComponentContainer>
+    return(
+        
+    <ComponentContainer>
         <ModalContainer>
             <h1>Welcome to Blogger Pro</h1>
             <h2>Please enter your account information.</h2>
+            <div>
+                <FormGroup onSubmit={handleLogin}>
+                    <Label>Username:
+                        <Input
+                            id="username"
+                            onChange={handleChange}
+                            type='text'
+                            name='username'
+                            placeholder='username'
+                        />
+                    </Label>
+                    <Label>Password:
+                        <Input
+                            id="password"
+                            onChange={handleChange}
+                            type='text'
+                            name='password'
+                            placeholder='password'
+                        />
+                    </Label>
+                    <Button id="submit">Submit</Button>
+                    <div>
+                    { errMessage && <p id="error">Error</p> }
+                    </div>
+                </FormGroup>
+                
+            </div>
         </ModalContainer>
     </ComponentContainer>);
 }
@@ -52,6 +120,7 @@ const Input = styled.input`
 `
 
 const Button = styled.button`
+    margin-top: 2vh;
     padding:1rem;
     width: 100%;
 `
