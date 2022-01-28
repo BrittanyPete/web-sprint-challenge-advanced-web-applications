@@ -18,6 +18,9 @@ useEffect(() => {
         .then(resp => {
             setArticles(resp.data);
         })
+        .catch(err => {
+            console.log(err);
+        })
 }, [])
 
     const handleDelete = (id) => {

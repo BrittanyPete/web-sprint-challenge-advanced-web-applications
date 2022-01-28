@@ -3,22 +3,29 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Header = () => {
+  const isLoggedIn = localStorage.getItem("token");
 
-    const isLoggedIn = localStorage.getItem("token");
-
-    return(
-        <HeaderStyle>
-            <p>Blogger Pro</p>
-            <MenuStyle>
-                
-                <li><Link to="/">Login</Link></li>
-                {isLoggedIn && (<li><Link to="view">View</Link></li>)}
-                {isLoggedIn && (<li><Link to="logout">Logout</Link></li>)}
-                
-            </MenuStyle>
-        </HeaderStyle>
-    );
-}
+  return (
+    <HeaderStyle>
+      <p>Blogger Pro</p>
+      <MenuStyle>
+        <li>
+          <Link to="/">Login</Link>
+        </li>
+        {isLoggedIn && (
+          <li>
+            <Link to="view">View</Link>
+          </li>
+        )}
+        {isLoggedIn && (
+          <li>
+            <Link to="logout">Logout</Link>
+          </li>
+        )}
+      </MenuStyle>
+    </HeaderStyle>
+  );
+};
 
 export default Header;
 

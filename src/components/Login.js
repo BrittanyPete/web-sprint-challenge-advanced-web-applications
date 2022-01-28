@@ -4,76 +4,73 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 const Login = () => {
+  const initialState = {
+    username: "",
+    password: "",
+  };
 
-    const initialState = {
-        username: '',
-        password: '', 
-    }
+  const [credentials, setCredentials] = useState(initialState);
+  const [errMessage, setErrMessage] = useState("");
+  const { push } = useHistory();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
 
-    const [credentials, setCredentials] = useState(initialState);
-    const [errMessage, setErrMessage] = useState('');
-    const { push } = useHistory();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:5000/api/login`, credentials)
+      .then((resp) => {
+        localStorage.setItem("token", resp.data.token);
+        localStorage.setItem("role", resp.data.role);
+        localStorage.setItem("username", resp.data.username);
+        push("/view");
+      })
+      .catch((err) => {
+        setErrMessage(err.response.data.error);
+      });
+  };
 
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setCredentials({
-            ...credentials,
-            [name]: value
-        })
-    }
-
-    const handleLogin = e => {
-        e.preventDefault();
-        axios.post(`http://localhost:5000/api/login`, credentials)
-            .then(resp => {
-                localStorage.setItem('token', resp.data.token);
-                localStorage.setItem('role', resp.data.role);
-                localStorage.setItem('username', resp.data.username);
-                push('/view');
-            })
-            .catch(err => {
-                setErrMessage(err.response.data.error)
-            })
-    }
-
-    
-    return(
-        
+  return (
     <ComponentContainer>
-        <ModalContainer>
-            <h1>Welcome to Blogger Pro</h1>
-            <h2>Please enter your account information.</h2>
-            <div>
-                <FormGroup onSubmit={handleLogin}>
-                    <Label>Username:
-                        <Input
-                            id="username"
-                            onChange={handleChange}
-                            type='text'
-                            name='username'
-                            placeholder='username'
-                        />
-                    </Label>
-                    <Label>Password:
-                        <Input
-                            id="password"
-                            onChange={handleChange}
-                            type='text'
-                            name='password'
-                            placeholder='password'
-                        />
-                    </Label>
-                    <Button id="submit">Submit</Button>
-                    <div>
-                    { errMessage && <p id="error">{errMessage}</p> }
-                    </div>
-                </FormGroup>
-                
-            </div>
-        </ModalContainer>
-    </ComponentContainer>);
-}
+      <ModalContainer>
+        <h1>Welcome to Blogger Pro</h1>
+        <h2>Please enter your account information.</h2>
+        <div>
+          <FormGroup onSubmit={handleLogin}>
+            <Label>
+              Username:
+              <Input
+                id="username"
+                onChange={handleChange}
+                type="text"
+                name="username"
+                placeholder="username"
+              />
+            </Label>
+            <Label>
+              Password:
+              <Input
+                id="password"
+                onChange={handleChange}
+                type="text"
+                name="password"
+                placeholder="password"
+              />
+            </Label>
+            <Button id="submit">Submit</Button>
+            <div>{errMessage && <p id="error">{errMessage}</p>}</div>
+          </FormGroup>
+        </div>
+      </ModalContainer>
+    </ComponentContainer>
+  );
+};
 
 export default Login;
 
