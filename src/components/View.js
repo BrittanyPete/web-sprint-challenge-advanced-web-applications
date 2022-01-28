@@ -26,6 +26,9 @@ useEffect(() => {
                 setArticles(resp.data)
                 push(`/view`)
             })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     const handleEdit = (article) => {
@@ -47,7 +50,6 @@ useEffect(() => {
     const handleEditCancel = ()=>{
         setEditing(false);
     }
-
 
 
     return(<ComponentContainer>

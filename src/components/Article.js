@@ -20,7 +20,7 @@ const Article = (props)=> {
         </ArticleStyle>
         
         <ButtonContainer>
-            <button data-testid="deleteButton" onClick={()=> {handleDelete(article.id)}}>Delete</button>                
+            <button data-testid="deleteButton" id='deleteButton' onClick={()=> {handleDelete(article.id)}}>Delete</button>                
             <button data-testid="editButton" onClick={()=> {handleEditSelect(article.id)}}>Edit</button>
         </ButtonContainer>
     </div>);
