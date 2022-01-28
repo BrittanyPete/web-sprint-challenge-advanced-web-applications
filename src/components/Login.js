@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
 
@@ -12,6 +13,7 @@ const Login = () => {
 
     const [credentials, setCredentials] = useState(initialState);
     const [errMessage, setErrMessage] = useState('');
+    const { push } = useHistory();
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -23,24 +25,18 @@ const Login = () => {
 
     const handleLogin = e => {
         e.preventDefault();
-        console.log('creds:', credentials);
-        console.log('error:', errMessage);
         axios.post(`http://localhost:5000/api/login`, credentials)
             .then(resp => {
-                // console.log('resp:', resp.data)
                 localStorage.setItem('token', resp.data.token);
                 localStorage.setItem('role', resp.data.role);
                 localStorage.setItem('username', resp.data.username);
+                push('/view');
             })
             .catch(err => {
-                // console.log('error:', err.response.data.error);
-                setErrMessage({
-                    error: err.response.data.error
-                });
+                setErrMessage(err.response.data.error)
             })
     }
 
-    console.log('errMsg:', errMessage);
     
     return(
         
@@ -70,7 +66,7 @@ const Login = () => {
                     </Label>
                     <Button id="submit">Submit</Button>
                     <div>
-                    { errMessage && <p id="error">Error</p> }
+                    { errMessage && <p id="error">{errMessage}</p> }
                     </div>
                 </FormGroup>
                 
